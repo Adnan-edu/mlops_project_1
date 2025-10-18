@@ -22,6 +22,7 @@ pipeline{
                     python -m venv ${VENV_DIR}
                     . ${VENV_DIR}/bin/activate
                     pip install --upgrade pip
+                    pip install "pyarrow>=14,<17"
                     pip install -e .
                     '''
                 }
