@@ -25,7 +25,7 @@ RUN pip install --upgrade pip && \
 RUN python pipeline/training_pipeline.py
 
 # Expose the port that Flask will run on
-EXPOSE 5000
+EXPOSE 8080
 
 # Command to run the app
 CMD ["python", "application.py"]
