@@ -22,7 +22,6 @@ pipeline{
                     python -m venv ${VENV_DIR}
                     . ${VENV_DIR}/bin/activate
                     pip install --upgrade pip
-                    pip install "pyarrow>=14,<17"
                     pip install -e .
                     '''
                 }
@@ -36,8 +35,7 @@ pipeline{
                         echo 'Building and Pushing Docker Image to GCR.............'
                         sh '''
                         export PATH=$PATH:${GCLOUD_PATH}
-
-
+                        docker info        
                         gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
 
                         gcloud config set project ${GCP_PROJECT}

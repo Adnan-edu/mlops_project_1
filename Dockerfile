@@ -18,7 +18,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY . .
 
 # Install the package in editable mode
-RUN pip install --no-cache-dir -e .
+RUN pip install --upgrade pip && \
+    pip install "pyarrow>=14,<17" && \
+    pip install --no-cache-dir -e .
 
 # Train the model before running the application
 RUN python pipeline/training_pipeline.py
