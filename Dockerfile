@@ -24,6 +24,9 @@ RUN pip install --upgrade pip && \
 # Train the model before running the application
 RUN python pipeline/training_pipeline.py
 
+# Cloud Run requires listening on PORT environment variable (default 8080)
+ENV PORT=8080
+
 # Expose the port that Flask will run on
 EXPOSE 8080
 
