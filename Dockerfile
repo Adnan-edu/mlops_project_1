@@ -8,18 +8,22 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 # Set the working directory
 WORKDIR /app
 
-# Install system dependencies required by LightGBM
+# Install system dependencies required by LightGBM and PyArrow build
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libgomp1 \
+    build-essential \
+    cmake \
+    git \
+    python3-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy the application code
 COPY . .
 
-# Install the package in editable mode
+# Upgrade pip, install PyArrow from prebuilt wheels if possible
 RUN pip install --upgrade pip && \
-    pip install "pyarrow>=14,<17" && \
+    pip install "pyarrow>=14,<17" --no-cache-dir && \
     pip install --no-cache-dir -e .
 
 # Train the model before running the application
