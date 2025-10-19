@@ -70,7 +70,6 @@ pipeline{
                             --platform=managed \
                             --region=us-central1 \
                             --allow-unauthenticated \
-                            --port 8080 \
                             --timeout 10m
                             
                         '''
