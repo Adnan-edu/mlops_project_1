@@ -21,11 +21,16 @@ COPY . .
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir -e .
 
+# Install gunicorn
+RUN pip install gunicorn
+
+
 # Train the model before running the application
-RUN python pipeline/training_pipeline.py
+# RUN python pipeline/training_pipeline.py
 
 # Expose the port that Flask will run on
 EXPOSE 8080
 
 # Command to run the app
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "application:app"]
+# CMD to run the app with gunicorn
+CMD ["gunicorn", "-b", "0.0.0.0:8080", "application:app"]
