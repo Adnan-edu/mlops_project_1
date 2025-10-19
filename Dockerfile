@@ -1,36 +1,28 @@
-# Use Python 3.12 for better PyArrow wheel availability
+# Use Python 3.12 for prebuilt wheels on amd64
 FROM python:3.12-slim
 
-# Set environment variables to prevent Python from writing .pyc files & Ensure Python output is not buffered
 ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1 \
+    PORT=8080
 
-# Set the working directory
 WORKDIR /app
 
-# Install system dependencies required by LightGBM
+# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libgomp1 \
+        libgomp1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy the application code
+# Copy project
 COPY . .
 
 # Upgrade pip and install dependencies
-RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -e .
+RUN pip install --upgrade pip \
+    && pip install --no-cache-dir -e . \
+    && pip install gunicorn
 
-# Install gunicorn
-RUN pip install gunicorn
-
-
-# Train the model before running the application
-# RUN python pipeline/training_pipeline.py
-
-# Expose the port that Flask will run on
+# Expose the Cloud Run port
 EXPOSE 8080
 
-# Command to run the app
-# CMD to run the app with gunicorn
+# Start the app with gunicorn
 CMD ["gunicorn", "-b", "0.0.0.0:8080", "application:app"]
